@@ -26,8 +26,59 @@
 		</div>
 	</div>
 </div>
-<button class="book">Book a tickets</button>
+<button type="button" class="btn book" data-bs-toggle="modal" data-bs-target="#myModal">Book a tickets</button>
 <!-- End slider -->
+
+<!--Book Ticket Modal-->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered">
+	<div class="modal-content">
+
+	  <!-- Modal Header -->
+	  <div class="modal-header">
+		  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		<h4 class="modal-title">Đặt vé <i class="fa-solid fa-ticket"></i> </h4>
+
+
+	  </div>
+
+	  <!-- Modal body -->
+	  <div class="modal-body">
+		<div class="nav nav-pills modal-header-btn" role="tablist">
+			<li class="nav-item">
+	  			<a class="nav-link one-way active" data-bs-toggle="pill" href="#one-way">Khứ hồi</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link round-trip" data-bs-toggle="pill" href="#menu1">Một chiều</a>
+			</li>
+		</div>
+		<div class="tab-content">
+			<div id="one-way" class="container tab-pane active"><br>
+			  <form class="form-one-way">
+				  <div class="form-group">
+					<label for="formGroupExampleInput">Điểm đi</label>
+					<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Điểm đi">
+				  </div>
+				  <div class="form-group">
+					<label for="formGroupExampleInput2">Điểm đến</label>
+					<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Điểm đến">
+				  </div>
+			  </form>
+			</div>
+			<div id="menu1" class="container tab-pane fade"><br>
+			  <h3>Menu 1</h3>
+			  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			</div>
+	  	</div>
+	  </div>
+	  <!-- Modal footer -->
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
 <!-- Services -->
 <section class="services py-5" id="services">
 	<!--Start Container-->
