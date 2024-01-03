@@ -334,6 +334,15 @@ nav .header--nav li a:hover,
     z-index: 9999;
 }
 
+.active-modal-header{
+    background-color: #02c39a !important;
+    color: #fff;
+}
+
+.modal-dialog.modal-dialog-centered {
+    max-width: 900px;
+}
+
 .modal-header{
     display: block;
     background-color: #02c39a;
@@ -356,11 +365,8 @@ nav .header--nav li a:hover,
     margin: 0;
 }
 
-.nav-pills .nav-item{
+.modal-header-btn .nav-item{
     margin-right: 8px;
-}
-
-.nav-pills .nav-link {
     background: 0 0;
     border: 0;
     border-radius: .25rem;
@@ -371,9 +377,42 @@ nav .header--nav li a:hover,
     border: 1px solid rgba(0,0,0,.05);
     line-height: 23px;
     transition: all 0.3s ease-in-out 0s;
+    cursor: pointer;
 }
 
-.nav-pills .nav-link.active{
+.modal-header-btn .nav-item.active{
+    background-color: #02c39a;
+    color: #fff;
+}
+
+/* Chrome, Safari, Edge, Opera -> Hide arrows from input number*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input#quantity-tickets{
+    max-width: 2em;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+}
+
+button.quantity-btn {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    border: 1px solid transparent;
+}
+
+.modal-footer .book-ticket{
     background-color: #02c39a;
     color: #fff;
 }
