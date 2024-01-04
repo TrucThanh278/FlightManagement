@@ -78,6 +78,8 @@ nav .header--nav li a:hover,
 	background-position: center;
 }
 
+
+
 .slider-content {
 	display: flex;
 	margin: auto;
@@ -328,6 +330,40 @@ nav .header--nav li a:hover,
 /*end copyrights*/
 /*end footer*/
 
+/*start Login - Register */
+.login {
+    position: relative;
+	min-height: 700px;
+	background-image: linear-gradient(0, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url(/static/images/plane.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+.form_login_register {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    padding: 120px;
+    color: #fff;
+}
+
+.form_register--name{
+    display: flex;
+}
+.form_register--surname {
+    margin-right:50px;
+}
+.btn--log {
+    text-decoration:none;
+    color:#fff
+}
+. header--register btn-top {
+    margin-left: 10px
+}
+
+/*end Login - Register */
 
 /*Book ticket Modal*/
 #myModal{
