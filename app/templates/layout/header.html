@@ -5,12 +5,18 @@
 	</div>
 	<div class="header--right">
 		<div class="top">
-			<button type="submit" class="header--log-on btn-top">
+			{% if current_user.is_authenticated %}
+			<a type="submit" class="btn--log header--log-out btn-top" href="{{ url_for('logout') }}">
+				Thoát
+			</a>
+		    {% else %}
+			<a type="submit" class="btn--log header--log-on btn-top" href="{{ url_for('register') }}">
 				Đăng kí
-			</button>
-			<button type="submit" class="header--register btn-top">
+			</a>
+			<a type="submit" class="btn--log header--register btn-top" href="{{ url_for('login') }}">
 				Đăng nhập
-			</button>
+			</a>
+			{% endif %}
 		</div>
 		<div class="bottom">
 			<nav class="services">
