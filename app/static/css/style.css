@@ -364,3 +364,91 @@ nav .header--nav li a:hover,
 }
 
 /*end Login - Register */
+
+/*Book ticket Modal*/
+#myModal{
+    z-index: 9999;
+}
+
+.active-modal-header{
+    background-color: #02c39a !important;
+    color: #fff;
+}
+
+.modal-dialog.modal-dialog-centered {
+    max-width: 900px;
+}
+
+.modal-header{
+    display: block;
+    background-color: #02c39a;
+    color: #fff;
+    text-align: center;
+    font-size: 30px;
+    letter-spacing: 4px;
+    padding: 32px 16px;
+}
+
+.modal-header .btn-close{
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    opacity: 0.8;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 16px;
+    margin: 0;
+}
+
+.modal-header-btn .nav-item{
+    margin-right: 8px;
+    background: 0 0;
+    border: 0;
+    border-radius: .25rem;
+    font-size: 13px;
+    display: block;
+    padding: 3px 25px;
+    border-radius: 30px;
+    border: 1px solid rgba(0,0,0,.05);
+    line-height: 23px;
+    transition: all 0.3s ease-in-out 0s;
+    cursor: pointer;
+}
+
+.modal-header-btn .nav-item.active{
+    background-color: #02c39a;
+    color: #fff;
+}
+
+/* Chrome, Safari, Edge, Opera -> Hide arrows from input number*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input#quantity-tickets{
+    max-width: 2em;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+}
+
+button.quantity-btn {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    border: 1px solid transparent;
+}
+
+.modal-footer .book-ticket{
+    background-color: #02c39a;
+    color: #fff;
+}
