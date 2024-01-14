@@ -44,7 +44,7 @@ def auth_user(email=None, password=None):
             if user and user.password == password:
                 return user
 
-def get_flight_details(airport_id = None, from_date =None, to_date=None):
+def get_flight_details(airport_id = None, from_date =None, to_date=None, dasda= None):
 
     flights = db.session.query(
                     Routes.id.label('route_id'),
