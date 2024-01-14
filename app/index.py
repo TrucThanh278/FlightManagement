@@ -338,6 +338,7 @@ def handle_payments():
     except Exception as e:
         return f'Error: {str(e)}'
 
+#------------Staff
 @app.route('/staff/login', methods=["GET", "POST"])
 def staff_login():
     err_msg = ""
@@ -379,6 +380,48 @@ def staff_logout():
     logout_user()
     return redirect(url_for('staff_login'))
 
+#------------Admin
+
+@app.route('/stats')
+def stats():
+    return render_template("admin/stats.html")
+@app.route('/admin/login', methods=["GET", "POST"])
+def admin_login():
+
+    if request.method == 'POST':
+        email = request.form.get("email")
+        password = request.form.get("password")
+        user = dao.auth_user(email=email, password=password)
+        if user:
+            login_user(user=user)
+    return redirect('/admin')
+
+@app.route('/admin/register', methods=['POST', 'GET'])
+def admin_register():
+    if request.method == 'POST':
+        last_name = request.form.get('surname')
+        first_name = request.form.get('firstname')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not (last_name and first_name and phone and address and email and password):
+            return redirect(url_for('staff_register'))
+
+        if not dao.check_user_existence(email=email, last_name=last_name, first_name=first_name):
+            return redirect(url_for('staff_register'))
+
+        dao.add_user(last_name=last_name, first_name=first_name,
+                     phone=phone, address=address, email=email, password=password)
+        return redirect(url_for('admin_login'))
+    return render_template('admin/admin-register.html')
+
+@app.route('/admin/logout')
+def admin_logout():
+    logout_user()
+    return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
+    from app import admin
     app.run(debug=True)
