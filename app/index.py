@@ -154,14 +154,10 @@ def handle_payments():
     # &requestType=$requestType
     rawSignature = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl + "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode + "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType
 
-    # puts raw signature
-    print("--------------------RAW SIGNATURE----------------")
     print(rawSignature)
     # signature
     h = hmac.new(bytes(secretKey, 'ascii'), bytes(rawSignature, 'ascii'), hashlib.sha256)
     signature = h.hexdigest()
-    print("--------------------SIGNATURE----------------")
-    print(signature)
 
     # json object send to MoMo endpoint
 
@@ -180,9 +176,7 @@ def handle_payments():
         'requestType': requestType,
         'signature': signature
     }
-    print("--------------------JSON REQUEST----------------\n")
     data = json.dumps(data)
-    print(data)
 
     clen = len(data)
     response = requests.post(endpoint, data=data,

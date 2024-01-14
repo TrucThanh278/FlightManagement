@@ -55,7 +55,7 @@ def get_flight_details(departure_airport_id, arrival_airport_id, departure_date,
     current_time = datetime.now()
     departure_date_input = datetime.strptime(departure_date, '%Y-%m-%d')
 
-    routes_data =  db.session.query(
+    routes_data = db.session.query(
         Routes.id.label('route_id'),
         Routes.name.label('route_name'),
         RoutesInfo.airport_id.label('routes_info_airport_id'),
