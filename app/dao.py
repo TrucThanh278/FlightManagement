@@ -1,9 +1,9 @@
 import hashlib
-from app.models import User, Airport, FlightDetails, AirportRole, Routes, RoutesInfo, Flight, Plane, FareClass, Seat, Staff, FlightSchedule
+from app.models import User, Airport, FlightDetails, AirportRole, Routes, RoutesInfo, Flight, Plane, FareClass, Seat, \
+    Staff, FlightSchedule, Ticket
 from app import app, db
 from datetime import datetime
 from sqlalchemy import and_, func
-from sqlalchemy import excfrom datetime import datetime
 from flask import redirect, url_for
 
 def get_user_by_id(user_id):
@@ -12,29 +12,29 @@ def get_user_by_id(user_id):
         return user
 
 
-def add_user(surname=None, firstname=None, phone=None, address=None, email=None, password=None):
-    if surname and firstname and phone and address and email and password:
-        surname = surname.strip()
-        firstname = firstname.strip()
+def add_user(last_name=None, first_name=None, phone=None, address=None, email=None, password=None):
+    if last_name and first_name and phone and address and email and password:
+        last_name = last_name.strip()
+        first_name = first_name.strip()
         phone = phone.strip()
         address = address.strip()
         email = email.strip()
         password = password.strip()
 
-        user = User(surname=surname, firstname=firstname, phone=phone,
+        user = User(last_name=last_name, first_name=first_name, phone=phone,
                     address=address, email=email, password=password)
 
         db.session.add(user)
         db.session.commit()
 
 
-def check_user_existence(email=None, surname=None, firstname=None):
+def check_user_existence(email=None, last_name=None, first_name=None):
     if email:
         existing_user_email = User.query.filter_by(email=email.strip()).first()
         if existing_user_email:
             return False
-    if surname and firstname:
-        existing_user_name = User.query.filter_by(surname=surname.strip(), firstname=firstname.strip()).first()
+    if last_name and first_name:
+        existing_user_name = User.query.filter_by(last_name=last_name.strip(), first_name=first_name.strip()).first()
         if existing_user_name:
             return False
     return True
@@ -271,9 +271,9 @@ def get_flight_details(departure_airport_id, arrival_airport_id, departure_date,
 
     return departure_flight_data, arrival_flight_data, ticket_info
 
-def add_user(lastname, firstname, phone, address, email):
-    new_user = User(last_name=lastname, first_name=firstname, phone=phone, address=address,
-                 email=email)
+def add_user(last_name, first_name, phone, address, email,password):
+    new_user = User(last_name=last_name, first_name=first_name, phone=phone,
+                    address=address, password=password,email=email)
     db.session.add(new_user)
     db.session.commit()
     
@@ -285,3 +285,27 @@ def seat(name, plane_id, fare_class_id):
 
 def add_ticket(flight_id, fare_class_id, customer_id, seat):
     pass
+
+
+
+def total_revenue():
+    return (db.session.query(
+        Routes.id.label('route_id'),
+        Routes.name.label('route_name'),
+        func.MONTH(FlightDetails.time).label('month'),
+        (
+            func.sum(func.IF(Ticket.fare_class_id == 1, FareClass.price, 0) +
+                     func.IF(Ticket.fare_class_id == 2, FareClass.price, 0))
+            * func.count(Flight.id)
+        ).label('total_revenue')
+    )
+              .outerjoin(Flight, Routes.id == Flight.routes_id)
+              .outerjoin(FlightDetails, Flight.id == FlightDetails.flight_id)
+              .outerjoin(Ticket, Flight.id == Ticket.flight_id)
+              .outerjoin(FareClass, Ticket.fare_class_id == FareClass.id)
+              .group_by(Routes.id, Routes.name, func.MONTH(FlightDetails.time))
+              .all())
+
+if __name__ == "__main__":
+    with app.app_context():
+        print(total_revenue())
