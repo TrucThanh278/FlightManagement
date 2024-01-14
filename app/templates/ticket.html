@@ -8,26 +8,6 @@
 		<link rel="stylesheet" href="/static/css/style.css" />
 </head>
 
-
-<header class="header">
-	<div class="header--left">
-		<img src="/static/images/logo.png" alt="logo" class="logo" />
-		My <span>Airline</span>
-	</div>
-	<div class="header--right">
-		<div class="top">
-			{% if current_user.is_authenticated %}
-
-            <div style="color:#337ab7 ; padding-right: 10px" > Hi {{ current_user.firstname }} !</div>
-			<a type="submit" style="color:#337ab7" class="btn--log header--log-out btn-top" href="{{ url_for('staff_logout') }}">
-				Logout
-			</a>
-
-			{% endif %}
-		</div>
-	</div>
-</header>
-
 <body>
 <br/>
 <div class="container">

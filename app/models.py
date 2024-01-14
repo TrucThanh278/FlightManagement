@@ -17,14 +17,14 @@ class AirportRole(enum.Enum):
 
 class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    surname = Column(String(50), nullable=False)
-    firstname = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    first_name = Column(String(50), nullable=False)
     phone = Column(String(50), nullable=False)
     address = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
+    password = Column(String(50), nullable=True)
     avatar = Column(String(100), default='https://res.cloudinary.com/dxxwcby8l/image/upload/v1688179242/hclq65mc6so7vdrbp7hz.jpg')
-    user_role = Column(Enum(UserRoleEnum), default=UserRoleEnum.CUSTOMER)
+    user_role = Column(Enum(UserRoleEnum))
     joined_date = Column(DateTime, default=datetime.now())
     def __str__(self):
         return self.firstname
@@ -167,14 +167,15 @@ class Ticket(db.Model):
 
 if __name__ == "__main__":
     with app.app_context():
-        # db.create_all()
+        db.create_all()
+        user1 = User(last_name='Nguyen Van', first_name='A', phone='0931825412', address='111 van troi',
+                     email='vana@gmail.com')
+        user2 = User(last_name='Nguyen Van', first_name='B', phone='0731825412', address='112 van troi',
+                     email='vanb@gmail.com')
+        user3 = User(last_name='Nguyen Van', first_name='C', phone='0831825412', address='113 van troi',
+                     email='vanc@gmail.com')
+        db.session.add_all([user1, user2, user3])
 
-        user1 = User(surname='Nguyen', firstname='Van A', phone='0931825412', address='111 van troi',
-                     email='vana@gmail.com', password='123')
-        user2 = User(surname='Nguyen', firstname='Van B', phone='0731825412', address='112 van troi',
-                     email='vanb@gmail.com', password='123')
-        user3 = User(surname='Nguyen', firstname='Van C', phone='0831825412', address='113 van troi',
-                     email='vanc@gmail.com', password='123')
         db.session.add_all([user1, user2, user3])
         db.session.commit()
 
@@ -189,9 +190,6 @@ if __name__ == "__main__":
         admin1 = Admin(user_id=user3.id)
         db.session.add(admin1)
         db.session.commit()
-
-
-
 
         stats1 = Stats(admin_id=1, revenue=1000000, num_of_flights=121, ratio=80, month=3, total_revenue=59000000)
         stats2 = Stats(admin_id=1, revenue=2000000, num_of_flights=122, ratio=70, month=4, total_revenue=60000000)

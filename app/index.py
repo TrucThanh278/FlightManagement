@@ -9,25 +9,33 @@ from app.models import AirportRole, FlightDetails, RoutesInfo, Flight, Routes
 def home():
     return render_template('index.html')
 
+
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
-        surname = request.form.get('surname')
-        firstname = request.form.get('firstname')
+        last_name = request.form.get('last-name')
+        first_name = request.form.get('first-name')
         phone = request.form.get('phone')
         address = request.form.get('address')
         email = request.form.get('email')
         password = request.form.get('password')
 
-        if not (surname and firstname and phone and address and email and password):
+        if not (last_name and first_name and phone and address and email and password):
+            flash('Please fill in all the fields', 'error')
             return redirect(url_for('register'))
 
-        if not dao.check_user_existence(email=email, surname=surname, firstname=firstname):
+        if not dao.check_user_existence(email=email, last_name=last_name, first_name=first_name):
+            flash('User already exists. Please choose a different email or username.', 'error')
             return redirect(url_for('register'))
 
-        dao.add_user(surname=surname, firstname=firstname, phone=phone, address=address, email=email, password=password)
+        dao.add_user(last_name=last_name, first_name=first_name, phone=phone, address=address, email=email, password=password)
+
+        flash('User registered successfully!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
+
+
 
 @login.user_loader
 def load_user(user_id):
@@ -41,7 +49,7 @@ def login():
         user = dao.auth_user(email=email, password=password)
         if user:
             login_user(user=user)
-            return redirect(url_for('home'))
+            return redirect(url_for('/'))
         else:
             err_msg = "Invalid email or password."
 
@@ -57,7 +65,7 @@ def ticket():
     from_date = request.args.get("from_date")
     to_date = request.args.get("to_date")
 
-    fli = dao.get_flight_details(airport_id=airport_id, from_date=from_date, to_date=to_date)
+    fli = dao.get_flight_details_schedule(airport_id=airport_id, from_date=from_date, to_date=to_date)
     air = dao.read_airports()
 
     return render_template("ticket.html",
@@ -107,7 +115,7 @@ def add_or_update_ticket():
                            planes=dao.read_planes(),
                            airports=dao.read_airports(),
                            flights=dao.read_flights(),
-                           flight_details=dao.get_flight_details(),
+                           flight_details=dao.get_flight_details_schedule(),
                            flight_schedules = dao.read_flight_schedules(),
                            staffs = dao.read_staffs(),
                            flight = flight_details,
@@ -153,7 +161,7 @@ def update_ticket_by_id(flight_details_id):
                            planes=dao.read_planes(),
                            airports=dao.read_airports(),
                            flights=dao.read_flights(),
-                           flight_details=dao.get_flight_details(),
+                           flight_details=dao.get_flight_details_schedule(),
                            flight_schedules=dao.read_flight_schedules(),
                            staffs=dao.read_staffs(),
                            flight=flight_detail,
@@ -170,46 +178,6 @@ def delete_ticket_by_id(flight_details_id):
 
             return redirect(url_for('ticket'))
 
-
-@app.route('/staff/login', methods=["GET", "POST"])
-def staff_login():
-    err_msg = ""
-    if request.method == 'POST':
-        email = request.form.get("email")
-        password = request.form.get("password")
-        user = dao.auth_user(email=email, password=password)
-        if user:
-            login_user(user=user)
-            return redirect(url_for('ticket'))
-        else:
-            err_msg = "Invalid email or password."
-
-    return render_template("staff-login.html", err_msg=err_msg)
-
-@app.route('/staff/register', methods=['POST', 'GET'])
-def staff_register():
-    if request.method == 'POST':
-        surname = request.form.get('surname')
-        firstname = request.form.get('firstname')
-        phone = request.form.get('phone')
-        address = request.form.get('address')
-        email = request.form.get('email')
-        password = request.form.get('password')
-
-        if not (surname and firstname and phone and address and email and password):
-            return redirect(url_for('staff_register'))
-
-        if not dao.check_user_existence(email=email, surname=surname, firstname=firstname):
-            return redirect(url_for('staff_register'))
-
-        dao.add_user(surname=surname, firstname=firstname, phone=phone, address=address, email=email, password=password)
-        return redirect(url_for('staff_login'))
-    return render_template('staff-register.html')
-
-@app.route('/staff/logout')
-def staff_logout():
-    logout_user()
-    return redirect(url_for('staff_login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
