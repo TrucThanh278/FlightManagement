@@ -47,39 +47,47 @@
 			<li class="nav-item round-trip faded" onclick="toggleActiveModal(this)">Một chiều</li>
 		</div>
 		<div class="tab-content">
-			<div id="one-way" class="container active"><br>
-			  <form class="form-one-way row g-2 justify-content-around">
+			<div class="container active"><br>
+			  <form class="row g-2 justify-content-around" method="POST" action="/bookticket">
 				  <div class="form-group col-5">
-					<label for="departure-point">Điểm đi</label>
-					<input type="text" class="form-control" id="departure-point" placeholder="Điểm đi">
+					<label for="departure">Điểm đi</label>
+					<select id="departure" name="departure">
+					  	{% for i in range(0, locations|length) %}
+							<option value="{{ locations[i].id }}">{{locations[i].id ~ ' - ' ~ locations[i].name}}</option>
+						{% endfor %}
+					</select>
 				  </div>
 				  <div class="form-group col-5">
-					  <label for="destination">Điểm đến</label>
-					  <input type="text" class="form-control" id="destination" placeholder="Điểm đến">
+					<label for="destination">Điểm đến</label>
+					<select id="destination" name="destination">
+					  	{% for i in range(0, locations|length) %}
+							<option value="{{ locations[i].id }}">{{locations[i].id ~ ' - ' ~ locations[i].name}}</option>
+						{% endfor %}
+					</select>
 				  </div>
 					<div class="form-group quantity-input col-2">
 						<label for="quantity-tickets">Số lượng vé</label>
 						<div class="quantity-input">
 							<button type="button" class="quantity-btn" onclick="quantityTickets('decrease')">-</button>
-							<input id="quantity-tickets" type="number" value="0" min="0" max="9" disabled/>
+							<input id="quantity-tickets" name="quantity-tickets" type="number" value="0" min="0" max="9" readonly/>
 							<button type="button" class="quantity-btn" onclick="quantityTickets('increase')">+</button>
 						</div>
 					</div>
 				  <div class="form-group col-6">
 					<label for="departure-date">Ngày đi</label>
-					<input type="date" class="form-control" id="departure-date" placeholder="Điểm đi">
+					<input type="date" class="form-control" id="departure-date" name="departure-date" placeholder="Điểm đi">
 				  </div>
 				  <div class="form-group col-6">
 					  <label for="return-date">Ngày về</label>
-					  <input type="date" class="form-control" id="return-date" placeholder="Điểm đến">
+					  <input type="date" class="form-control" id="return-date" name="return-date" placeholder="Điểm đến">
+				  </div>
+				  <!-- Modal footer -->
+				  <div class="modal-footer">
+					<button class="btn book-ticket-btn" type="submit">Tìm vé</button>
 				  </div>
 			  </form>
 			</div>
 	  	</div>
-	  </div>
-	  <!-- Modal footer -->
-	  <div class="modal-footer">
-		<button type="button" class="btn book-ticket" data-bs-dismiss="modal">Tìm vé</button>
 	  </div>
 	</div>
   </div>

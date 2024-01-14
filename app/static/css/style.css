@@ -448,7 +448,8 @@ button.quantity-btn {
     border: 1px solid transparent;
 }
 
-.modal-footer .book-ticket{
+.modal-footer .book-ticket-btn{
     background-color: #02c39a;
     color: #fff;
 }
+
