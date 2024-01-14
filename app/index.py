@@ -369,7 +369,8 @@ def staff_register():
         if not dao.check_user_existence(email=email, last_name=last_name, first_name=first_name):
             return redirect(url_for('staff_register'))
 
-        dao.add_user(last_name=last_name, first_name=first_name, phone=phone, address=address, email=email, password=password)
+        dao.add_user(last_name=last_name, first_name=first_name,
+                     phone=phone, address=address, email=email, password=password)
         return redirect(url_for('staff_login'))
     return render_template('staff-register.html')
 

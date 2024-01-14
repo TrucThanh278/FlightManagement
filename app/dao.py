@@ -270,9 +270,9 @@ def get_flight_details(departure_airport_id, arrival_airport_id, departure_date,
 
     return departure_flight_data, arrival_flight_data, ticket_info
 
-def add_user(last_name, first_name, phone, address, email):
-    new_user = User(last_name=last_name, first_name=first_name, phone=phone, address=address,
-                 email=email)
+def add_user(last_name, first_name, phone, address, email,password):
+    new_user = User(last_name=last_name, first_name=first_name, phone=phone,
+                    address=address, password=password,email=email)
     db.session.add(new_user)
     db.session.commit()
     
