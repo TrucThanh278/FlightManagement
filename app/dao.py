@@ -3,7 +3,6 @@ from app.models import User, Airport, FlightDetails, AirportRole, Routes, Routes
 from app import app, db
 from datetime import datetime
 from sqlalchemy import and_, func
-from sqlalchemy import excfrom datetime import datetime
 from flask import redirect, url_for
 
 def get_user_by_id(user_id):
@@ -12,29 +11,29 @@ def get_user_by_id(user_id):
         return user
 
 
-def add_user(surname=None, firstname=None, phone=None, address=None, email=None, password=None):
-    if surname and firstname and phone and address and email and password:
-        surname = surname.strip()
-        firstname = firstname.strip()
+def add_user(last_name=None, first_name=None, phone=None, address=None, email=None, password=None):
+    if last_name and first_name and phone and address and email and password:
+        last_name = last_name.strip()
+        first_name = first_name.strip()
         phone = phone.strip()
         address = address.strip()
         email = email.strip()
         password = password.strip()
 
-        user = User(surname=surname, firstname=firstname, phone=phone,
+        user = User(last_name=last_name, first_name=first_name, phone=phone,
                     address=address, email=email, password=password)
 
         db.session.add(user)
         db.session.commit()
 
 
-def check_user_existence(email=None, surname=None, firstname=None):
+def check_user_existence(email=None, last_name=None, first_name=None):
     if email:
         existing_user_email = User.query.filter_by(email=email.strip()).first()
         if existing_user_email:
             return False
-    if surname and firstname:
-        existing_user_name = User.query.filter_by(surname=surname.strip(), firstname=firstname.strip()).first()
+    if last_name and first_name:
+        existing_user_name = User.query.filter_by(last_name=last_name.strip(), first_name=first_name.strip()).first()
         if existing_user_name:
             return False
     return True
@@ -271,8 +270,8 @@ def get_flight_details(departure_airport_id, arrival_airport_id, departure_date,
 
     return departure_flight_data, arrival_flight_data, ticket_info
 
-def add_user(lastname, firstname, phone, address, email):
-    new_user = User(last_name=lastname, first_name=firstname, phone=phone, address=address,
+def add_user(last_name, first_name, phone, address, email):
+    new_user = User(last_name=last_name, first_name=first_name, phone=phone, address=address,
                  email=email)
     db.session.add(new_user)
     db.session.commit()

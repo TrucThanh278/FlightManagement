@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     phone = Column(String(50), nullable=False)
     address = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False, unique=True)
+    password = Column(String(50), nullable=True)
     avatar = Column(String(100), default='https://res.cloudinary.com/dxxwcby8l/image/upload/v1688179242/hclq65mc6so7vdrbp7hz.jpg')
     user_role = Column(Enum(UserRoleEnum), default=UserRoleEnum.CUSTOMER)
     joined_date = Column(DateTime, default=datetime.now())
@@ -38,14 +39,12 @@ class Customer(db.Model):
 
 class Staff(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    password = Column(String(50), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False, unique=True)
     User = relationship('User', uselist=False)
     flight_schedules = relationship("FlightSchedule", backref='Staff', lazy=True)
 
 class Admin(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    password = Column(String(50), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False, unique=True)
     User = relationship('User', uselist=False)
     Stats = relationship('Stats', backref='Admin', lazy=True)
@@ -168,127 +167,127 @@ class Ticket(db.Model):
 
 if __name__ == "__main__":
     with app.app_context():
-        # db.create_all()
-
-        user1 = User(surname='Nguyen', firstname='Van A', phone='0931825412', address='111 van troi',
-                     email='vana@gmail.com', password='123')
-        user2 = User(surname='Nguyen', firstname='Van B', phone='0731825412', address='112 van troi',
-                     email='vanb@gmail.com', password='123')
-        user3 = User(surname='Nguyen', firstname='Van C', phone='0831825412', address='113 van troi',
-                     email='vanc@gmail.com', password='123')
-        db.session.add_all([user1, user2, user3])
-        db.session.commit()
-
-        customer1 = Customer(user_id=user1.id)
-        db.session.add(customer1)
-        db.session.commit()
-
-        staff1 = Staff(user_id=user2.id)
-        db.session.add(staff1)
-        db.session.commit()
-
-        admin1 = Admin(user_id=user3.id)
-        db.session.add(admin1)
-        db.session.commit()
-
-
-
-
-        stats1 = Stats(admin_id=1, revenue=1000000, num_of_flights=121, ratio=80, month=3, total_revenue=59000000)
-        stats2 = Stats(admin_id=1, revenue=2000000, num_of_flights=122, ratio=70, month=4, total_revenue=60000000)
-        stats3 = Stats(admin_id=1, revenue=3000000, num_of_flights=123, ratio=60, month=5, total_revenue=61000000)
-        stats4 = Stats(admin_id=1, revenue=4000000, num_of_flights=124, ratio=90, month=6, total_revenue=62000000)
-        db.session.add_all([stats1,stats2,stats3,stats4])
-        db.session.commit()
-
-        airport1 = Airport(name='Noi Bai', airport_address='Ha Noi')
-        airport2 = Airport(name='Tan Son Nhat', airport_address='TP Ho Chi Minh')
-        airport3 = Airport(name='Can Tho', airport_address='Can Tho')
-        airport4 = Airport(name='Da Nang', airport_address='Da Nang')
-        airport5 = Airport(name='Ca Mau', airport_address='Ca Mau')
-        airport6 = Airport(name='Phu Quoc', airport_address='Phu Quoc')
-        airport7 = Airport(name='Dien Bien Phu', airport_address='Dien Bien')
-        airport8 = Airport(name='Tho Xuan', airport_address='Thanh Hoa')
-
-        db.session.add_all([airport1,airport2,airport3,airport4, airport5, airport6,airport7,airport8])
-        db.session.commit()
-
-        routes1 = Routes(name='Ha Noi - TP HCM', stats_id=1)
-        routes2 = Routes(name='Can Tho - TP HCM', stats_id=3)
-        routes3 = Routes(name='Da Nang - TP HCM', stats_id=4)
-        routes4 = Routes(name='TP HCM - Ha Noi', stats_id=2)
-        routes5 = Routes(name='Ca Mau - Phu Quoc', stats_id=3)
-        routes6 = Routes(name='Phu Quoc - Tho Xuan', stats_id=3)
-        routes7 = Routes(name='Dien Bien Phu - Tho Xuan', stats_id=3)
-        routes8 = Routes(name='Tho Xuan - Can Tho', stats_id=3)
-        db.session.add_all([routes1,routes2,routes3,routes4,routes5, routes6, routes7,routes8])
-        db.session.commit()
-
-        routes_info1 = RoutesInfo(airport_id=1,routes_id=1, airport_role=AirportRole.DEPARTURE)
-        routes_info2 = RoutesInfo(airport_id=2, routes_id=1, airport_role=AirportRole.ARRIVAL)
-        routes_info3 = RoutesInfo(airport_id=3, routes_id=2, airport_role=AirportRole.DEPARTURE)
-        routes_info4 = RoutesInfo(airport_id=2, routes_id=2, airport_role=AirportRole.ARRIVAL)
-        routes_info5 = RoutesInfo(airport_id=4, routes_id=3, airport_role=AirportRole.DEPARTURE)
-        routes_info6 = RoutesInfo(airport_id=2, routes_id=3, airport_role=AirportRole.ARRIVAL)
-        routes_info7 = RoutesInfo(airport_id=2, routes_id=4, airport_role=AirportRole.DEPARTURE)
-        routes_info8 = RoutesInfo(airport_id=1, routes_id=4, airport_role=AirportRole.ARRIVAL)
-        db.session.add_all([routes_info1,routes_info2,routes_info3,routes_info4,routes_info5,routes_info6])
-        db.session.commit()
-
-        plane1 = Plane(name='VietNam Airlines')
-        plane2 = Plane(name='Vietjet Air')
-        plane3 = Plane(name='Jetstar Pacific')
-        plane4 = Plane(name='Bamboo Airways')
-        db.session.add_all([plane1,plane2,plane3,plane4])
-        db.session.commit()
-
-
-        flight_schedule1 = FlightSchedule(staff=1)
-        db.session.add(flight_schedule1)
-        db.session.commit()
-
-
-        flight1 = Flight(plane_id=1, routes_id=1, flight_name='VN007')
-        flight2 = Flight(plane_id=2, routes_id=2, flight_name='VN008')
-        flight3 = Flight(plane_id=3, routes_id=3, flight_name='VN009')
-        flight4 = Flight(plane_id=4, routes_id=4, flight_name='VN006')
-        flight5 = Flight(plane_id=1, routes_id=5, flight_name='VN055')
-        flight6 = Flight(plane_id=2, routes_id=6, flight_name='VN066')
-        flight7 = Flight(plane_id=3, routes_id=7, flight_name='VN077')
-        flight8 = Flight(plane_id=4, routes_id=8, flight_name='VN088')
-        db.session.add_all([flight1,flight2,flight3,flight4,flight5,flight6,flight7,flight8])
-        db.session.commit()
-
-        flight_details1 = FlightDetails(flight_id=1, time=datetime(2024,5,9,11,00,00),
-                                       flight_duration=6.5, num_of_seats_1st_class = 100
-                                       , num_of_seats_2st_class=50, flight_schedule_id=1)
-        flight_details2 = FlightDetails(flight_id=2, time=datetime(2024,6,9,10,00,00),
-                                        flight_duration=11.2, num_of_seats_1st_class=100
-                                        , num_of_seats_2st_class=50, flight_schedule_id=1)
-        flight_details3 = FlightDetails(flight_id=3, time=datetime(2024,6,12,12,00,00),
-                                        flight_duration=8, num_of_seats_1st_class=100
-                                        , num_of_seats_2st_class=50,  flight_schedule_id=1)
-        flight_details4 = FlightDetails(flight_id=4, time=datetime(2024,6,15,12,00,00),
-                                        flight_duration=9, num_of_seats_1st_class=100
-                                        , num_of_seats_2st_class=50, flight_schedule_id=1)
-        db.session.add_all([flight_details1,flight_details2,flight_details3,flight_details4])
-        db.session.commit()
-
-        fareclass1 = FareClass(name = 'Thuong Gia', price=1000000)
-        fareclass2 = FareClass(name='Pho Thong', price=500000)
-        db.session.add_all([fareclass1,fareclass2])
-        db.session.commit()
+        db.create_all()
         #
-        seat1 = Seat(name='Ghe 1', plane_id=1, fare_class_id=1)
-        seat2 = Seat(name='Ghe 2', plane_id=1, fare_class_id=2)
-        seat3 = Seat(name='Ghe 3', plane_id=2, fare_class_id=1)
-        seat4 = Seat(name='Ghe 4', plane_id=2, fare_class_id=2)
-        db.session.add_all([seat1,seat2,seat3,seat4])
-        db.session.commit()
+        # user1 = User(last_name='Nguyen', first_name='Van A', phone='0931825412', address='111 van troi',
+        #              email='vana@gmail.com', password='123')
+        # user2 = User(last_name='Nguyen', first_name='Van B', phone='0731825412', address='112 van troi',
+        #              email='vanb@gmail.com', password='123')
+        # user3 = User(last_name='Nguyen', first_name='Van C', phone='0831825412', address='113 van troi',
+        #              email='vanc@gmail.com', password='123')
+        # db.session.add_all([user1, user2, user3])
+        # db.session.commit()
         #
-        ticket1 = Ticket(flight_id=1,  fare_class_id=1, customer_id=1, seat=1)
-        ticket2 = Ticket(flight_id=2, fare_class_id=2, customer_id=1, seat=2)
-        ticket3 = Ticket(flight_id=3, fare_class_id=1, customer_id=1, seat=3)
-        ticket4 = Ticket(flight_id=4, fare_class_id=2, customer_id=1, seat=4)
-        db.session.add_all([ticket1,ticket2,ticket3,ticket4])
-        db.session.commit()
+        # customer1 = Customer(user_id=1)
+        # db.session.add(customer1)
+        # db.session.commit()
+
+        # staff1 = Staff(user_id=2)
+        # db.session.add(staff1)
+        # db.session.commit()
+
+        # admin1 = Admin(user_id=3)
+        # db.session.add(admin1)
+        # db.session.commit()
+
+
+
+
+        # stats1 = Stats(admin_id=1, revenue=1000000, num_of_flights=121, ratio=80, month=3, total_revenue=59000000)
+        # stats2 = Stats(admin_id=1, revenue=2000000, num_of_flights=122, ratio=70, month=4, total_revenue=60000000)
+        # stats3 = Stats(admin_id=1, revenue=3000000, num_of_flights=123, ratio=60, month=5, total_revenue=61000000)
+        # stats4 = Stats(admin_id=1, revenue=4000000, num_of_flights=124, ratio=90, month=6, total_revenue=62000000)
+        # db.session.add_all([stats1,stats2,stats3,stats4])
+        # db.session.commit()
+        #
+        # airport1 = Airport(name='Noi Bai', airport_address='Ha Noi')
+        # airport2 = Airport(name='Tan Son Nhat', airport_address='TP Ho Chi Minh')
+        # airport3 = Airport(name='Can Tho', airport_address='Can Tho')
+        # airport4 = Airport(name='Da Nang', airport_address='Da Nang')
+        # airport5 = Airport(name='Ca Mau', airport_address='Ca Mau')
+        # airport6 = Airport(name='Phu Quoc', airport_address='Phu Quoc')
+        # airport7 = Airport(name='Dien Bien Phu', airport_address='Dien Bien')
+        # airport8 = Airport(name='Tho Xuan', airport_address='Thanh Hoa')
+        #
+        # db.session.add_all([airport1,airport2,airport3,airport4, airport5, airport6,airport7,airport8])
+        # db.session.commit()
+        #
+        # routes1 = Routes(name='Ha Noi - TP HCM', stats_id=1)
+        # routes2 = Routes(name='Can Tho - TP HCM', stats_id=3)
+        # routes3 = Routes(name='Da Nang - TP HCM', stats_id=4)
+        # routes4 = Routes(name='TP HCM - Ha Noi', stats_id=2)
+        # routes5 = Routes(name='Ca Mau - Phu Quoc', stats_id=3)
+        # routes6 = Routes(name='Phu Quoc - Tho Xuan', stats_id=3)
+        # routes7 = Routes(name='Dien Bien Phu - Tho Xuan', stats_id=3)
+        # routes8 = Routes(name='Tho Xuan - Can Tho', stats_id=3)
+        # db.session.add_all([routes1,routes2,routes3,routes4,routes5, routes6, routes7,routes8])
+        # db.session.commit()
+        #
+        # routes_info1 = RoutesInfo(airport_id=1,routes_id=1, airport_role=AirportRole.DEPARTURE)
+        # routes_info2 = RoutesInfo(airport_id=2, routes_id=1, airport_role=AirportRole.ARRIVAL)
+        # routes_info3 = RoutesInfo(airport_id=3, routes_id=2, airport_role=AirportRole.DEPARTURE)
+        # routes_info4 = RoutesInfo(airport_id=2, routes_id=2, airport_role=AirportRole.ARRIVAL)
+        # routes_info5 = RoutesInfo(airport_id=4, routes_id=3, airport_role=AirportRole.DEPARTURE)
+        # routes_info6 = RoutesInfo(airport_id=2, routes_id=3, airport_role=AirportRole.ARRIVAL)
+        # routes_info7 = RoutesInfo(airport_id=2, routes_id=4, airport_role=AirportRole.DEPARTURE)
+        # routes_info8 = RoutesInfo(airport_id=1, routes_id=4, airport_role=AirportRole.ARRIVAL)
+        # db.session.add_all([routes_info1,routes_info2,routes_info3,routes_info4,routes_info5,routes_info6])
+        # db.session.commit()
+        #
+        # plane1 = Plane(name='VietNam Airlines')
+        # plane2 = Plane(name='Vietjet Air')
+        # plane3 = Plane(name='Jetstar Pacific')
+        # plane4 = Plane(name='Bamboo Airways')
+        # db.session.add_all([plane1,plane2,plane3,plane4])
+        # db.session.commit()
+        #
+        #
+        # flight_schedule1 = FlightSchedule(staff=1)
+        # db.session.add(flight_schedule1)
+        # db.session.commit()
+        #
+        #
+        # flight1 = Flight(plane_id=1, routes_id=1, flight_name='VN007')
+        # flight2 = Flight(plane_id=2, routes_id=2, flight_name='VN008')
+        # flight3 = Flight(plane_id=3, routes_id=3, flight_name='VN009')
+        # flight4 = Flight(plane_id=4, routes_id=4, flight_name='VN006')
+        # flight5 = Flight(plane_id=1, routes_id=5, flight_name='VN055')
+        # flight6 = Flight(plane_id=2, routes_id=6, flight_name='VN066')
+        # flight7 = Flight(plane_id=3, routes_id=7, flight_name='VN077')
+        # flight8 = Flight(plane_id=4, routes_id=8, flight_name='VN088')
+        # db.session.add_all([flight1,flight2,flight3,flight4,flight5,flight6,flight7,flight8])
+        # db.session.commit()
+        #
+        # flight_details1 = FlightDetails(flight_id=1, time=datetime(2024,5,9,11,00,00),
+        #                                flight_duration=6.5, num_of_seats_1st_class = 100
+        #                                , num_of_seats_2st_class=50, flight_schedule_id=1)
+        # flight_details2 = FlightDetails(flight_id=2, time=datetime(2024,6,9,10,00,00),
+        #                                 flight_duration=11.2, num_of_seats_1st_class=100
+        #                                 , num_of_seats_2st_class=50, flight_schedule_id=1)
+        # flight_details3 = FlightDetails(flight_id=3, time=datetime(2024,6,12,12,00,00),
+        #                                 flight_duration=8, num_of_seats_1st_class=100
+        #                                 , num_of_seats_2st_class=50,  flight_schedule_id=1)
+        # flight_details4 = FlightDetails(flight_id=4, time=datetime(2024,6,15,12,00,00),
+        #                                 flight_duration=9, num_of_seats_1st_class=100
+        #                                 , num_of_seats_2st_class=50, flight_schedule_id=1)
+        # db.session.add_all([flight_details1,flight_details2,flight_details3,flight_details4])
+        # db.session.commit()
+        #
+        # fareclass1 = FareClass(name = 'Thuong Gia', price=1000000)
+        # fareclass2 = FareClass(name='Pho Thong', price=500000)
+        # db.session.add_all([fareclass1,fareclass2])
+        # db.session.commit()
+        # #
+        # seat1 = Seat(name='Ghe 1', plane_id=1, fare_class_id=1)
+        # seat2 = Seat(name='Ghe 2', plane_id=1, fare_class_id=2)
+        # seat3 = Seat(name='Ghe 3', plane_id=2, fare_class_id=1)
+        # seat4 = Seat(name='Ghe 4', plane_id=2, fare_class_id=2)
+        # db.session.add_all([seat1,seat2,seat3,seat4])
+        # db.session.commit()
+        # #
+        # ticket1 = Ticket(flight_id=1,  fare_class_id=1, customer_id=1, seat=1)
+        # ticket2 = Ticket(flight_id=2, fare_class_id=2, customer_id=1, seat=2)
+        # ticket3 = Ticket(flight_id=3, fare_class_id=1, customer_id=1, seat=3)
+        # ticket4 = Ticket(flight_id=4, fare_class_id=2, customer_id=1, seat=4)
+        # db.session.add_all([ticket1,ticket2,ticket3,ticket4])
+        # db.session.commit()
