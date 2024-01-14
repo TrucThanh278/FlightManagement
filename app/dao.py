@@ -1,5 +1,6 @@
 import hashlib
-from app.models import User, Airport, FlightDetails, AirportRole, Routes, RoutesInfo, Flight, Plane, FareClass, Seat, Staff, FlightSchedule
+from app.models import User, Airport, FlightDetails, AirportRole, Routes, RoutesInfo, Flight, Plane, FareClass, Seat, \
+    Staff, FlightSchedule, Ticket
 from app import app, db
 from datetime import datetime
 from sqlalchemy import and_, func
@@ -284,3 +285,27 @@ def seat(name, plane_id, fare_class_id):
 
 def add_ticket(flight_id, fare_class_id, customer_id, seat):
     pass
+
+
+
+def total_revenue():
+    return (db.session.query(
+        Routes.id.label('route_id'),
+        Routes.name.label('route_name'),
+        func.MONTH(FlightDetails.time).label('month'),
+        (
+            func.sum(func.IF(Ticket.fare_class_id == 1, FareClass.price, 0) +
+                     func.IF(Ticket.fare_class_id == 2, FareClass.price, 0))
+            * func.count(Flight.id)
+        ).label('total_revenue')
+    )
+              .outerjoin(Flight, Routes.id == Flight.routes_id)
+              .outerjoin(FlightDetails, Flight.id == FlightDetails.flight_id)
+              .outerjoin(Ticket, Flight.id == Ticket.flight_id)
+              .outerjoin(FareClass, Ticket.fare_class_id == FareClass.id)
+              .group_by(Routes.id, Routes.name, func.MONTH(FlightDetails.time))
+              .all())
+
+if __name__ == "__main__":
+    with app.app_context():
+        print(total_revenue())
