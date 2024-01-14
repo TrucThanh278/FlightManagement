@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 import enum
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, date, time
 
 class UserRoleEnum(enum.Enum):
     CUSTOMER = 1
@@ -17,12 +17,11 @@ class AirportRole(enum.Enum):
 
 class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    surname = Column(String(50), nullable=False)
-    firstname = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    first_name = Column(String(50), nullable=False)
     phone = Column(String(50), nullable=False)
     address = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
     avatar = Column(String(100), default='https://res.cloudinary.com/dxxwcby8l/image/upload/v1688179242/hclq65mc6so7vdrbp7hz.jpg')
     user_role = Column(Enum(UserRoleEnum), default=UserRoleEnum.CUSTOMER)
     joined_date = Column(DateTime, default=datetime.now())
@@ -39,12 +38,14 @@ class Customer(db.Model):
 
 class Staff(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
+    password = Column(String(50), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False, unique=True)
     User = relationship('User', uselist=False)
     flight_schedules = relationship("FlightSchedule", backref='Staff', lazy=True)
 
 class Admin(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
+    password = Column(String(50), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False, unique=True)
     User = relationship('User', uselist=False)
     Stats = relationship('Stats', backref='Admin', lazy=True)
@@ -291,4 +292,3 @@ if __name__ == "__main__":
         ticket4 = Ticket(flight_id=4, fare_class_id=2, customer_id=1, seat=4)
         db.session.add_all([ticket1,ticket2,ticket3,ticket4])
         db.session.commit()
-
