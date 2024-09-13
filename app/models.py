@@ -167,8 +167,8 @@ class Ticket(db.Model):
 
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()
-
+        # db.create_all()
+        #
         # user1 = User(last_name='Nguyen', first_name='Van A', phone='0931825412', address='111 van troi',
         #              email='vana@gmail.com', password='123')
         # user2 = User(last_name='Nguyen', first_name='Van B', phone='0731825412', address='112 van troi',
@@ -246,9 +246,9 @@ if __name__ == "__main__":
         # routes3 = Routes(name='Da Nang - TP HCM', stats_id=3)
         # routes4 = Routes(name='Ca Mau - Phu Quoc', stats_id=4)
         # routes5 = Routes(name='Can Tho - Ha Noi', stats_id=5)
-        # routes6 = Routes(name='Phu Quoc - Tho Xuan', stats_id=6)
-        # routes7 = Routes(name='Dien Bien Phu - Tho Xuan', stats_id=7)
-        # routes8 = Routes(name='Tho Xuan - Can Tho', stats_id=8)
+        # # routes6 = Routes(name='Phu Quoc - Tho Xuan', stats_id=6)
+        # # routes7 = Routes(name='Dien Bien Phu - Tho Xuan', stats_id=7)
+        # # routes8 = Routes(name='Tho Xuan - Can Tho', stats_id=8)
         # # routes9 = Routes(name='Ha Noi - Phu Bai', stats_id=9)
         # # routes10 = Routes(name='Pleiku - Dong Hoi', stats_id=10)
         # # routes11 = Routes(name='Chu Lai - Phu Bai', stats_id=11)
@@ -262,7 +262,7 @@ if __name__ == "__main__":
         # # routes19= Routes(name='Lien Khuong - Can Tho', stats_id=6)
         # # routes20= Routes(name='Chu Lai - Phu Bai', stats_id=7)
         #
-        # db.session.add_all([routes1, routes2, routes3, routes4, routes5,routes6,routes7,routes8])
+        # db.session.add_all([routes1, routes2, routes3, routes4, routes5])
         # db.session.commit()
         #
         # routes_info1 = RoutesInfo(airport_id=1,routes_id=1, airport_role=AirportRole.DEPARTURE)
@@ -316,16 +316,11 @@ if __name__ == "__main__":
         # flight18 = Flight(plane_id=1, routes_id=5, flight_name='VN018')
         # flight19 = Flight(plane_id=4, routes_id=5, flight_name='VN019')
         # flight20 = Flight(plane_id=1, routes_id=5, flight_name='VN020')
-        # flight21 = Flight(plane_id=4, routes_id=5, flight_name='VN021')
-        # flight22 = Flight(plane_id=1, routes_id=5, flight_name='VN022')
-        # flight23 = Flight(plane_id=4, routes_id=5, flight_name='VN023')
-        # flight24 = Flight(plane_id=1, routes_id=5, flight_name='VN024')
-        #
         #
         # db.session.add_all([flight1,flight2,flight3,flight4,flight5,flight6,flight7,flight8,flight9,flight10
-        #                     ,flight11,flight12,flight13,flight14,flight15,flight16,flight17,flight18,flight19,flight20,flight21,flight22,flight23,flight24])
+        #                     ,flight11,flight12,flight13,flight14,flight15,flight16,flight17,flight18,flight19,flight20])
         # db.session.commit()
-
+        #
         # flight_details1 = FlightDetails(flight_id=1, time=datetime(2024,5,9,11,00,00),
         #                                flight_duration=6.5, num_of_seats_1st_class = 100
         #                                , num_of_seats_2st_class=50, flight_schedule_id=1)
@@ -395,7 +390,7 @@ if __name__ == "__main__":
         # fareclass2 = FareClass(name='Pho Thong', price=1200000)
         # db.session.add_all([fareclass1,fareclass2])
         # db.session.commit()
-        #
+        # #
         # seat1 = Seat(name='Ghe 1', plane_id=1, fare_class_id=1)
         # seat2 = Seat(name='Ghe 2', plane_id=1, fare_class_id=2)
         # seat3 = Seat(name='Ghe 3', plane_id=2, fare_class_id=1)
@@ -439,17 +434,17 @@ if __name__ == "__main__":
         #
         # db.session.add_all([seat1,seat2,seat3,seat4,seat5,seat6,seat7,seat8,seat9,seat10])
         # db.session.commit()
-
-        ticket1 = Ticket(flight_id=1,  fare_class_id=1, customer_id=1, seat=1)
-        ticket2 = Ticket(flight_id=1, fare_class_id=2, customer_id=2, seat=2)
-        ticket3 = Ticket(flight_id=2, fare_class_id=1, customer_id=3, seat=3)
-        ticket4 = Ticket(flight_id=2, fare_class_id=2, customer_id=1, seat=4)
-        ticket5 = Ticket(flight_id=3, fare_class_id=1, customer_id=2, seat=5)
-        ticket6 = Ticket(flight_id=3, fare_class_id=2, customer_id=3, seat=6)
-        ticket7 = Ticket(flight_id=4, fare_class_id=1, customer_id=1, seat=7)
-        ticket8 = Ticket(flight_id=4, fare_class_id=2, customer_id=2, seat=8)
-        ticket9 = Ticket(flight_id=5, fare_class_id=1, customer_id=3, seat=9)
-        ticket10 = Ticket(flight_id=5, fare_class_id=2, customer_id=1, seat=10)
+        # #
+        # ticket1 = Ticket(flight_id=1,  fare_class_id=1, customer_id=1, seat=1)
+        # ticket2 = Ticket(flight_id=1, fare_class_id=2, customer_id=2, seat=2)
+        # ticket3 = Ticket(flight_id=2, fare_class_id=1, customer_id=3, seat=3)
+        # ticket4 = Ticket(flight_id=2, fare_class_id=2, customer_id=1, seat=4)
+        # ticket5 = Ticket(flight_id=3, fare_class_id=1, customer_id=2, seat=5)
+        # ticket6 = Ticket(flight_id=3, fare_class_id=2, customer_id=3, seat=6)
+        # ticket7 = Ticket(flight_id=4, fare_class_id=1, customer_id=1, seat=7)
+        # ticket8 = Ticket(flight_id=4, fare_class_id=2, customer_id=2, seat=8)
+        # ticket9 = Ticket(flight_id=5, fare_class_id=1, customer_id=3, seat=9)
+        # ticket10 = Ticket(flight_id=5, fare_class_id=2, customer_id=1, seat=10)
         # ticket11 = Ticket(flight_id=6, fare_class_id=1, customer_id=2, seat=11)
         # ticket12 = Ticket(flight_id=6, fare_class_id=2, customer_id=3, seat=12)
         # ticket13 = Ticket(flight_id=7, fare_class_id=1, customer_id=1, seat=14)
@@ -470,7 +465,19 @@ if __name__ == "__main__":
         # ticket28 = Ticket(flight_id=14, fare_class_id=2, customer_id=1, seat=28)
         # ticket29 = Ticket(flight_id=15, fare_class_id=1, customer_id=2, seat=29)
         # ticket30 = Ticket(flight_id=15, fare_class_id=2, customer_id=3, seat=30)
-
-
-        db.session.add_all([ticket1,ticket2,ticket3,ticket4,ticket5,ticket6,ticket7,ticket8,ticket9,ticket10])
-        db.session.commit()
+        # ticket31 = Ticket(flight_id=16, fare_class_id=1, customer_id=1, seat=31)
+        # ticket32 = Ticket(flight_id=16, fare_class_id=2, customer_id=2, seat=32)
+        # ticket33 = Ticket(flight_id=17, fare_class_id=1, customer_id=3, seat=33)
+        # ticket34 = Ticket(flight_id=17, fare_class_id=2, customer_id=1, seat=34)
+        # ticket35 = Ticket(flight_id=18, fare_class_id=1, customer_id=2, seat=35)
+        # ticket36= Ticket(flight_id=18, fare_class_id=2, customer_id=3, seat=36)
+        # ticket37 = Ticket(flight_id=19, fare_class_id=1, customer_id=1, seat=37)
+        # ticket38 = Ticket(flight_id=19, fare_class_id=2, customer_id=2, seat=38)
+        # ticket39 = Ticket(flight_id=20, fare_class_id=1, customer_id=3, seat=39)
+        # ticket40 = Ticket(flight_id=20, fare_class_id=2, customer_id=1, seat=40)
+        #
+        # db.session.add_all([ticket1,ticket2,ticket3,ticket4,ticket5,ticket6,ticket7,ticket8,ticket9,ticket10,ticket11,
+        #                     ticket12,ticket13,ticket14,ticket15,ticket16,ticket17,ticket18,ticket19,ticket20,ticket21,
+        #                     ticket22, ticket23,ticket24,ticket25,ticket26,ticket27,ticket28,ticket29,ticket30,ticket31,
+        #                     ticket32,ticket33,ticket34,ticket35,ticket36,ticket37,ticket38,ticket39,ticket40])
+        # db.session.commit()
