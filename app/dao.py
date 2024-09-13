@@ -271,9 +271,9 @@ def get_flight_details(departure_airport_id, arrival_airport_id, departure_date,
 
     return departure_flight_data, arrival_flight_data, ticket_info
 
-def add_user(last_name, first_name, phone, address, email,password):
+def add_user(last_name, first_name, phone, address, email):
     new_user = User(last_name=last_name, first_name=first_name, phone=phone,
-                    address=address, password=password,email=email)
+                    address=address ,email=email)
     db.session.add(new_user)
     db.session.commit()
     
@@ -288,24 +288,42 @@ def add_ticket(flight_id, fare_class_id, customer_id, seat):
 
 
 
-def total_revenue():
-    return (db.session.query(
+def revenue_by_month_all_routes(kw):
+    return db.session.query(
         Routes.id.label('route_id'),
         Routes.name.label('route_name'),
-        func.MONTH(FlightDetails.time).label('month'),
-        (
-            func.sum(func.IF(Ticket.fare_class_id == 1, FareClass.price, 0) +
-                     func.IF(Ticket.fare_class_id == 2, FareClass.price, 0))
-            * func.count(Flight.id)
+        func.extract('month', FlightDetails.time).label('month'),
+        func.sum(
+            (func.IF(Ticket.fare_class_id == 1, FareClass.price, 0) +
+             func.IF(Ticket.fare_class_id == 2, FareClass.price, 0))
         ).label('total_revenue')
-    )
-              .outerjoin(Flight, Routes.id == Flight.routes_id)
-              .outerjoin(FlightDetails, Flight.id == FlightDetails.flight_id)
-              .outerjoin(Ticket, Flight.id == Ticket.flight_id)
-              .outerjoin(FareClass, Ticket.fare_class_id == FareClass.id)
-              .group_by(Routes.id, Routes.name, func.MONTH(FlightDetails.time))
-              .all())
+    ).join(Flight, Flight.routes_id == Routes.id) \
+     .join(FlightDetails, Flight.id == FlightDetails.flight_id) \
+     .join(Ticket, Flight.id == Ticket.flight_id) \
+     .join(FareClass, Ticket.fare_class_id == FareClass.id) \
+     .group_by(Routes.id, Routes.name, func.extract('month', FlightDetails.time)) \
+        .having(Routes.id == kw) \
+        .all()
+
+
+def count_route_by_month():
+    return db.session.query(
+        Routes.id.label('route_id'),
+        Routes.name.label('route_name'),
+        func.extract('month', FlightDetails.time).label('month'),
+        func.count(Flight.id).label('flight_count'),
+        func.sum(
+            (func.IF(Ticket.fare_class_id == 1, FareClass.price, 0) +
+             func.IF(Ticket.fare_class_id == 2, FareClass.price, 0)) * func.count(Flight.id).join(Flight, Routes.id == Flight.routes_id, isouter=True) \
+     .join(FlightDetails, Flight.id == FlightDetails.flight_id, isouter=True) \
+     .group_by(Routes.id)
+        )
+    ).join(Flight, Routes.id == Flight.routes_id, isouter=True) \
+     .join(FlightDetails, Flight.id == FlightDetails.flight_id, isouter=True) \
+     .group_by(Routes.id, Routes.name, func.extract('month', FlightDetails.time)) \
+     .all()
+
 
 if __name__ == "__main__":
     with app.app_context():
-        print(total_revenue())
+        print(revenue_by_month_all_routes(2))

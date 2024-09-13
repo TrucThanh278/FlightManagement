@@ -2,4 +2,62 @@
 
 {% block body %}
 <h1 class="text-success text-center">THÔNG KÊ BÁO CÁO</h1>
+<div class="row">
+    <div class="col-md-5">
+        <table class="table">
+            <tr>
+                <th>Mã tuyến</th>
+                <th>Tên tuyến</th>
+                <th>Tháng</th>
+                <th>Tổng doanh thu</th>
+            </tr>
+            {% for c in count_flights %}
+            <tr>
+                <td>{{c[0]}}</td>
+                <td>{{c[1]}}</td>
+                <td>{{c[2]}}</td>
+                <td>{{c[3]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-7">
+         <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let data = [];
+    let labels = [];
+    {% for c in count_flights %}
+    labels.push( '{{c[2]}}' )
+    data.push({{c[3]}})
+    {% endfor %}
+    console.log(data)
+    console.log(labels)
+
+    window.onload = function() {
+        const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Votes',
+        data: data,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  }
+</script>
 {% endblock %}
