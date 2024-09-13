@@ -167,7 +167,7 @@ class Ticket(db.Model):
 
 if __name__ == "__main__":
     with app.app_context():
-        # db.create_all()
+        db.create_all()
         #
         # user1 = User(last_name='Nguyen', first_name='Van A', phone='0931825412', address='111 van troi',
         #              email='vana@gmail.com', password='123')
