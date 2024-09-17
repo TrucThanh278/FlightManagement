@@ -27,8 +27,15 @@ pip install -r requirements.txt
 ```bash
 # Install database into MySQL
 Step 1: Open MySQL --> create Database (your_name_database)
-Step 2: Chose models.py --> run
+Step 2: Chose init.py : app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:pass_your_mysql@localhost/your_name_database?charset=utf8mb4"
+Step 3: Chose models.py --> run
 ```
+
+```bash
+# Run object
+Chose index.py --> run
+```
+
 # Database 
 <p align="center">
     <img src="./images/database.png">
@@ -61,4 +68,4 @@ Step 2: Chose models.py --> run
 </p>
 
 ## Flight Management Reports
-You can refer to the report :[DOC Report]([https://www.python.org/downloads/](https://docs.google.com/document/d/1FGd3wd_dzzHcztDyISH6vhUjkIJtFIC0A1mhXVJ2-3Q/edit?fbclid=IwY2xjawE0TE9leHRuA2FlbQIxMAABHUNry9_C_BpR9N-m1053HCNl_M_K_8pVhraR_RH9xCW2gbrfKpiB-IVpjw_aem_oCZMLsqVzz3kr2eEwL8BGg#heading=h.4d34og8))
+You can refer to the report : [DOC Report](https://docs.google.com/document/d/1FGd3wd_dzzHcztDyISH6vhUjkIJtFIC0A1mhXVJ2-3Q/edit?fbclid=IwY2xjawE0TE9leHRuA2FlbQIxMAABHUNry9_C_BpR9N-m1053HCNl_M_K_8pVhraR_RH9xCW2gbrfKpiB-IVpjw_aem_oCZMLsqVzz3kr2eEwL8BGg#heading=h.4d34og8)
